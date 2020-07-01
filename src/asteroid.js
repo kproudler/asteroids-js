@@ -2,7 +2,7 @@ const MovingObject = require('./moving_object.js');
 const Util = require('./util.js');
 
 const Defaults = {
-    color: "#505050",
+    color: "#ededed",
     radius: 25
 }
 
@@ -16,8 +16,18 @@ function Asteroid(options) {
     MovingObject.call(this, options);
 }
 
-
-
 Util.inherits(Asteroid, MovingObject);
+
+Asteroid.prototype.collideWith = function collideWith(otherObject) {
+    if (otherObject instanceof Ship) {
+        otherObject.relocate();
+        return true;
+    } else if (otherObject instanceof Bullet) {
+        this.remove();
+        otherObject.remove();
+        return true;
+    }
+    return false;
+};
 
 module.exports = Asteroid;
